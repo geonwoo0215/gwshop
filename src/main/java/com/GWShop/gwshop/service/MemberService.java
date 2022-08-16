@@ -16,6 +16,15 @@ public class MemberService {
     public void join(Member member) {
         log.info("저장!");
         memberRepository.save(member);
+    }
+
+    public Member login(String loginId, String password) {
+
+        Member saveMember = memberRepository.findByLoginId(loginId)
+                .orElseThrow(() -> new IllegalArgumentException("로그인 정보 시스템에 있는 계정과 일치하지 않습니다."));
+
+        if(saveMember.getPassword().equals(password)) return saveMember;
+        else throw new IllegalArgumentException("로그인 정보 시스템에 있는 계정과 일치하지 않습니다.");
 
     }
 
