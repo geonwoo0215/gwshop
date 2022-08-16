@@ -1,7 +1,6 @@
 package com.GWShop.gwshop.controller;
 
 import com.GWShop.gwshop.controller.form.MemberJoinForm;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,11 +13,9 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @SpringBootTest
 @AutoConfigureMockMvc
-class LoginControllerTest {
+class MemberControllerTest {
 
     @Autowired
     private MockMvc mockMvc;

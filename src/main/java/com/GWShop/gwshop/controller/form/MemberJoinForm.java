@@ -1,6 +1,7 @@
 package com.GWShop.gwshop.controller.form;
 
 
+import com.GWShop.gwshop.domain.Member;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -33,4 +34,14 @@ public class MemberJoinForm {
         this.loginId = loginId;
         this.password = password;
     }
+
+    public Member toMember() {
+
+        return Member.builder()
+                .nickname(nickname)
+                .loginId(loginId)
+                .password(password)
+                .build();
+    }
+
 }
