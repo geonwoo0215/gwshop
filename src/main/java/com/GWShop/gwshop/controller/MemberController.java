@@ -47,13 +47,22 @@ public class MemberController {
 
     @ResponseBody
     @PostMapping("/member/login")
-    public String login(@Valid @RequestBody LoginForm loginForm, HttpServletRequest request) {
-        log.info("loginForm={}",loginForm.toString());
+    public void login(@Valid @RequestBody LoginForm loginForm, HttpServletRequest request) {
+        log.info("loginForm={}", loginForm.toString());
         Member member = memberService.login(loginForm.getLoginId(), loginForm.getPassword());
         HttpSession session = request.getSession();
-        session.setAttribute(member.getLoginId(),member);
+        session.setAttribute(member.getLoginId(), member);
+    }
 
-        return "hello";
+    @ResponseBody
+    @PostMapping("/member/logout")
+    public void logout(HttpServletRequest request) {
+        log.info("로그아웃");
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            session.invalidate();
+        }
+
     }
 
 }
