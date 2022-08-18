@@ -7,6 +7,7 @@ import com.GWShop.gwshop.repository.MemberRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpSession;
 
@@ -36,6 +38,12 @@ class MemberControllerTest {
     private MemberRepository memberRepository;
 
     private MockHttpSession mockHttpSession;
+
+    @BeforeEach
+    void setUp() {
+        memberRepository.deleteAll();
+        mockHttpSession = new MockHttpSession();
+    }
 
     @Test
     @DisplayName("가입 정보 정상 전달")
@@ -115,6 +123,7 @@ class MemberControllerTest {
 
     @Test
     @DisplayName("회원 로그인")
+    @Transactional
     void test5() throws Exception {
 
         Member member = Member.builder()
@@ -135,9 +144,13 @@ class MemberControllerTest {
 
         mockMvc.perform(MockMvcRequestBuilders.post("/member/login")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(json))
+                        .content(json)
+                        .session(mockHttpSession))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andDo(MockMvcResultHandlers.print());
+
+
+        Assertions.assertThat(mockHttpSession.getAttribute(member.getLoginId())).isEqualTo(member);
 
 
     }
@@ -164,15 +177,17 @@ class MemberControllerTest {
 
         mockMvc.perform(MockMvcRequestBuilders.post("/member/login")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(json))
+                        .content(json)
+                        .session(mockHttpSession))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest())
                 .andDo(MockMvcResultHandlers.print());
+
 
 
     }
 
     @Test
-    @DisplayName("회원 로그인아웃")
+    @DisplayName("회원 로그아웃")
     void test7() throws Exception {
 
         Member member = Member.builder()
@@ -182,8 +197,6 @@ class MemberControllerTest {
                 .build();
 
         memberRepository.save(member);
-
-        mockHttpSession = new MockHttpSession();
 
         mockMvc.perform(MockMvcRequestBuilders.post("/member/logout")
                         .contentType(MediaType.APPLICATION_JSON)
