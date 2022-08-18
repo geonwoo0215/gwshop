@@ -65,4 +65,11 @@ class ItemServiceTest {
 
     }
 
+    @Test
+    @DisplayName("상품 상세 잘못된 요청")
+    void test3() {
+        Assertions.assertThatThrownBy(() -> itemService.read(1L))
+                .isInstanceOf(IllegalArgumentException.class).hasMessage("없는 상품 입니다.");
+    }
+
 }
