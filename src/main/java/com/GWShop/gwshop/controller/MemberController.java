@@ -4,6 +4,7 @@ import com.GWShop.gwshop.controller.form.LoginForm;
 import com.GWShop.gwshop.controller.form.MemberJoinForm;
 import com.GWShop.gwshop.domain.Member;
 import com.GWShop.gwshop.service.MemberService;
+import com.GWShop.gwshop.session.SessionConst;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -51,7 +52,7 @@ public class MemberController {
         log.info("loginForm={}", loginForm.toString());
         Member member = memberService.login(loginForm.getLoginId(), loginForm.getPassword());
         HttpSession session = request.getSession();
-        session.setAttribute(member.getLoginId(), member);
+        session.setAttribute(SessionConst.LOGIN_MEMBER, member);
     }
 
     @ResponseBody
