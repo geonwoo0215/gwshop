@@ -1,5 +1,6 @@
 package com.GWShop.gwshop.service;
 
+import com.GWShop.gwshop.controller.form.ItemEditForm;
 import com.GWShop.gwshop.domain.Item;
 import com.GWShop.gwshop.repository.ItemRepository;
 import org.assertj.core.api.Assertions;
@@ -70,6 +71,33 @@ class ItemServiceTest {
     void test3() {
         Assertions.assertThatThrownBy(() -> itemService.read(1L))
                 .isInstanceOf(IllegalArgumentException.class).hasMessage("없는 상품 입니다.");
+    }
+
+    @Test
+    @DisplayName("상품 수정")
+    void test4() {
+        Item item = Item.builder()
+                .name("셔츠")
+                .price(10000)
+                .stock(10)
+                .build();
+
+        Long saveId = itemRepository.save(item).getId();
+
+        ItemEditForm itemEditForm = ItemEditForm.builder()
+                .name("셔츠")
+                .price(5000)
+                .stock(9)
+                .build();
+
+        itemService.edit(saveId, itemEditForm);
+
+        Item changeItem = itemRepository.findById(saveId)
+                .orElseThrow(()-> new IllegalArgumentException("없는 상품 입니다."));
+        Assertions.assertThat(changeItem.getPrice()).isEqualTo(5000);
+        Assertions.assertThat(changeItem.getStock()).isEqualTo(9);
+
+
     }
 
 }
