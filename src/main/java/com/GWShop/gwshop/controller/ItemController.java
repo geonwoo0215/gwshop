@@ -1,5 +1,6 @@
 package com.GWShop.gwshop.controller;
 
+import com.GWShop.gwshop.controller.form.ItemEditForm;
 import com.GWShop.gwshop.controller.form.ItemForm;
 import com.GWShop.gwshop.service.ItemService;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +28,12 @@ public class ItemController {
     @GetMapping("/item/{itemId}")
     public void get(@PathVariable Long itemId) {
         log.info("itemId={}", itemId);
+    }
 
+    @ResponseBody
+    @PatchMapping("/item/{itemId}")
+    public void edit(@PathVariable Long itemId, @RequestBody @Valid ItemEditForm itemEditForm) {
+        itemService.edit(itemId,itemEditForm);
     }
 
 }

@@ -5,10 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @Getter
@@ -17,6 +14,7 @@ public class Item {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "item_id")
     private Long id;
 
     private String name;
@@ -30,5 +28,18 @@ public class Item {
         this.name = name;
         this.price = price;
         this.stock = stock;
+    }
+
+    public ItemEditor.ItemEditorBuilder toEditor() {
+        return ItemEditor.builder()
+                .name(name)
+                .price(price)
+                .stock(stock);
+    }
+
+    public void edit(ItemEditor itemEditor) {
+        this.name = itemEditor.getName();
+        this.price = itemEditor.getPrice();
+        this.stock = itemEditor.getStock();
     }
 }
