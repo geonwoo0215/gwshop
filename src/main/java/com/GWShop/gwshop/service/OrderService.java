@@ -45,4 +45,13 @@ public class OrderService {
         orderRepository.save(order);
     }
 
+
+    public void delete(Long id) {
+
+        Order order = orderRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("없는 주문 입니다."));
+
+        orderRepository.delete(order);
+    }
+
 }
