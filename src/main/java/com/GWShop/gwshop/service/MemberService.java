@@ -1,10 +1,14 @@
 package com.GWShop.gwshop.service;
 
+import com.GWShop.gwshop.domain.Cart;
 import com.GWShop.gwshop.domain.Member;
+import com.GWShop.gwshop.repository.CartRepository;
 import com.GWShop.gwshop.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.util.LinkedList;
 
 @Slf4j
 @Service
@@ -12,9 +16,14 @@ import org.springframework.stereotype.Service;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final CartRepository cartRepository;
 
     public void join(Member member) {
+        Cart cart = Cart.builder()
+                .member(member)
+                .build();
         log.info("저장!");
+        cartRepository.save(cart);
         memberRepository.save(member);
     }
 

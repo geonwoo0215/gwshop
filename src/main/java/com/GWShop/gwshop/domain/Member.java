@@ -23,6 +23,10 @@ public class Member {
 
     private String password;
 
+    @OneToOne
+    @JoinColumn(name = "cart_id")
+    private Cart cart;
+
     @Builder
     public Member(String nickname, String loginId, String password) {
         this.nickname = nickname;
