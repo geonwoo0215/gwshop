@@ -18,7 +18,7 @@ public class OrderItem {
     @Column(name = "order_item_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "item_id")
     private Item item;
 
@@ -36,5 +36,9 @@ public class OrderItem {
         this.quantity = quantity;
         this.orderPrice = item.getPrice();
         this.totalPrice = quantity * item.getPrice();
+    }
+
+    public void changeOrder(Order order) {
+        this.order = order;
     }
 }

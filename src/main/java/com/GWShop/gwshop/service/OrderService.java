@@ -24,7 +24,10 @@ public class OrderService {
 
     public void order(List<OrderItemForm> orderItemFormList, Member member) {
 
-        List<OrderItem> orderItemList = new ArrayList<>();
+        Order order = Order.builder()
+                .member(member)
+                .build();
+
         for (OrderItemForm orderItemForm : orderItemFormList) {
             Item item = itemRepository.findById(orderItemForm.getId())
                     .orElseThrow(() -> new IllegalArgumentException("없는 상품 입니다."));
@@ -34,13 +37,8 @@ public class OrderService {
                     .quantity(orderItemForm.getQuantity())
                     .build();
 
-            orderItemList.add(orderItem);
+            orderItem.changeOrder(order);
         }
-
-        Order order = Order.builder()
-                .member(member)
-                .orderItems(orderItemList)
-                .build();
 
         orderRepository.save(order);
     }
